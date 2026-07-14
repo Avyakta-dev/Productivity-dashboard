@@ -1,0 +1,558 @@
+/* ============================================
+   DESIGN TOKENS
+   Palette: #F3E5AB (cream) #A3C6A8 (sage)
+            #6B8E23 (olive) #D9CBAE (taupe)
+            #4F7942 (deep green)
+
+   Theme idea: "dark" = green main surfaces with
+   cream borders/details (the default, matches the
+   brief). "light" = cream main surfaces with green
+   borders — same palette, inverted roles.
+   ============================================ */
+
+:root[data-theme='dark'] {
+  --bg: #4f7942;
+  --surface: #6b8e23;
+  --surface-alt: #4f7942;
+  --text: #f3e5ab;
+  --text-muted: #d9cbae;
+  --border: #f3e5ab;
+  --shadow: #2b3a1a;
+  --accent: #a3c6a8;
+  --accent-text: #2b3a1a;
+  --danger: #e0704f;
+}
+
+:root[data-theme='light'] {
+  --bg: #f3e5ab;
+  --surface: #fbf6e3;
+  --surface-alt: #d9cbae;
+  --text: #3c5230;
+  --text-muted: #4f7942;
+  --border: #4f7942;
+  --shadow: #2b3a1a;
+  --accent: #6b8e23;
+  --accent-text: #f3e5ab;
+  --danger: #b8492f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'Archivo Black', 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+/* ============================================
+   NEOBRUTALIST PRIMITIVES
+   ============================================ */
+
+.nb-border {
+  border: 3px solid var(--border);
+}
+
+.nb-shadow {
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.nb-panel {
+  background: var(--surface);
+  border: 3px solid var(--border);
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.nb-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--shadow);
+  padding: 0.6rem 1.1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.nb-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.nb-btn:active,
+.nb-btn.is-pressed {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.nb-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.nb-btn.nb-btn--ghost {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.nb-btn.nb-btn--danger {
+  background: var(--danger);
+  color: var(--text);
+}
+
+.nb-input {
+  background: var(--surface);
+  color: var(--text);
+  border: 3px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.nb-input:focus,
+.nb-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.nb-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.6s ease;
+}
+
+/* Subtle time-of-day tint, staying inside the given palette. */
+.app[data-time='morning'] {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 18%, var(--bg)) 0%, var(--bg) 320px);
+}
+.app[data-time='afternoon'] {
+  background: var(--bg);
+}
+.app[data-time='evening'] {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-alt) 30%, var(--bg)) 0%, var(--bg) 320px);
+}
+.app[data-time='night'] {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--shadow) 25%, var(--bg)) 0%, var(--bg) 320px);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 3px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.topbar__brand {
+  font-size: 1.3rem;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+main {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Dashboard grid of feature cards */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 3px solid var(--border);
+  box-shadow: 6px 6px 0 var(--shadow);
+  padding: 1.5rem;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.feature-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--shadow);
+}
+
+.feature-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.feature-card__icon {
+  font-size: 2rem;
+}
+
+.feature-card__title {
+  font-size: 1rem;
+  font-family: 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.feature-card__desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Feature (detail) view */
+.feature-view {
+  animation: nb-pop 0.15s ease;
+}
+
+@keyframes nb-pop {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feature-view__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature-view__header h2 {
+  font-size: 1.4rem;
+}
+
+/* ============================================
+   SHARED LIST / ITEM STYLES (Todo, Goals)
+   ============================================ */
+
+.item-list {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--shadow);
+  padding: 0.6rem 0.9rem;
+}
+
+.item-row__text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.item-row.is-complete .item-row__text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.item-row.is-important {
+  border-color: var(--danger);
+}
+
+.item-row__icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text);
+  padding: 0.2rem;
+  line-height: 1;
+}
+
+.item-row__icon-btn:hover {
+  transform: scale(1.15);
+}
+
+.empty-state {
+  border: 3px dashed var(--border);
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+/* ============================================
+   PLANNER
+   ============================================ */
+
+.planner-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.planner-slot {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  border: 3px solid var(--border);
+  background: var(--surface);
+  padding: 0.5rem 0.75rem;
+}
+
+.planner-slot.is-current {
+  background: var(--accent);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.planner-slot.is-current .planner-slot__hour,
+.planner-slot.is-current input {
+  color: var(--accent-text);
+}
+
+.planner-slot__hour {
+  font-weight: 700;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.85rem;
+}
+
+.planner-slot input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  padding: 0.3rem 0.1rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.planner-slot input:focus {
+  outline: none;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ============================================
+   GOALS PROGRESS
+   ============================================ */
+
+.progress-bar-track {
+  border: 3px solid var(--border);
+  height: 28px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.progress-label {
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+
+/* ============================================
+   POMODORO
+   ============================================ */
+
+.pomodoro {
+  text-align: center;
+}
+
+.pomodoro__session {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 3px solid var(--border);
+  padding: 0.3rem 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.pomodoro__clock {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.pomodoro__controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   QUOTE
+   ============================================ */
+
+.quote-card {
+  text-align: center;
+  padding: 1rem 0.5rem;
+}
+
+.quote-card blockquote {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  margin: 1rem 0 1.5rem;
+  font-style: normal;
+}
+
+.quote-card cite {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.status-text {
+  color: var(--text-muted);
+}
+
+/* ============================================
+   WEATHER
+   ============================================ */
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.weather-main {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.weather-temp {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 3.5rem;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.weather-stat {
+  border: 3px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  background: var(--surface);
+}
+
+.weather-stat__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+}
+
+.weather-stat__value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ============================================
+   DATE/TIME + BACKGROUND
+   ============================================ */
+
+.datetime {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.datetime__time {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.1rem;
+}
+
+.datetime__date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .pomodoro__clock {
+    font-size: 3.2rem;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
