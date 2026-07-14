@@ -6,4 +6,7 @@ export default defineConfig({
   plugins: [react()],
 // so built asset URLs resolve under https://<user>.github.io/<repo-name>/
   base: '/Productivity-dashboard/'
+
 })
+
+

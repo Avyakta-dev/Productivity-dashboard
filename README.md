@@ -4,9 +4,6 @@ A single-page productivity dashboard built in React: Todo List, Daily Planner,
 Daily Goals, Pomodoro Timer, Motivation Quotes, Weather, live Date/Time,
 a time-of-day background tint, and a Light/Dark theme toggle.
 
-Design: neobrutalism — thick borders, hard offset shadows, flat color blocks —
-built entirely from this palette: `#F3E5AB` `#A3C6A8` `#6B8E23` `#D9CBAE` `#4F7942`.
-
 ## Run it
 
 ```bash
